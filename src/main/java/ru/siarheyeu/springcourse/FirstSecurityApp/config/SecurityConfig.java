@@ -30,8 +30,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         //конфигурируем сам Spring Security
         //конфигурируем авторизацию
-        http.formLogin().loginPage("/auth/login")
+        http.csrf().disable() //отключаем защиту от межсайтовой подделки запросов
+                .authorizeHttpRequests()
+                .antMatchers("/auth/login", "/error").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("process_login")
+                .defaultSuccessUrl("/hello", true)
+                .failureUrl("/auth/login?error");
     }
 
     //Настраивает аутентификацию
