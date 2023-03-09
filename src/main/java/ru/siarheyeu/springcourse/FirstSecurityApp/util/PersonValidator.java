@@ -2,6 +2,7 @@ package ru.siarheyeu.springcourse.FirstSecurityApp.util;
 
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import ru.siarheyeu.springcourse.FirstSecurityApp.models.Person;
@@ -30,6 +31,9 @@ public class PersonValidator implements Validator {
 
              {
         personDetailsService.loadUserByUsername(person.getUsername());
-             }
+             } catch (UsernameNotFoundException ignored){
+            return; // все ок, пользователь не найден
+    }
+        errors.rejectValue("username", "", "Человек с таким именем пользователя уже существует");
     }
 }
