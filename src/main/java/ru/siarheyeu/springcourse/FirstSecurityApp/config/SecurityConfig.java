@@ -49,12 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     //Настраивает аутентификацию
     @Override
 protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-    auth.userDetailsService(personDetailsService);
+    auth.userDetailsService(personDetailsService)
+            .passwordEncoder(getPasswordEncoder());
 }
 
 @Bean
     public PasswordEncoder getPasswordEncoder(){
-
         return new BCryptPasswordEncoder();
 }
 
