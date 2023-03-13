@@ -19,21 +19,20 @@ public class PersonValidator implements Validator {
     }
 
     @Override
-    public boolean supports (Class<?> aClass){
+    public boolean supports(Class<?> aClass) {
         return Person.class.equals(aClass);
     }
 
     @Override
-    public void validate (Object o, Errors errors) {
-        Person person = (Person)o;
-    }
-        try
+    public void validate(Object o, Errors errors) {
+        Person person = (Person) o;
 
-             {
-        personDetailsService.loadUserByUsername(person.getUsername());
-             } catch (UsernameNotFoundException ignored){
+        try {
+            personDetailsService.loadUserByUsername(person.getUsername());
+        } catch (UsernameNotFoundException ignored) {
             return; // все ок, пользователь не найден
-    }
+        }
+
         errors.rejectValue("username", "", "Человек с таким именем пользователя уже существует");
     }
 }

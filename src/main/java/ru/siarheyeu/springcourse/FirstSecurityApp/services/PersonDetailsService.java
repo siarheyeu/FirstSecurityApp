@@ -16,19 +16,18 @@ public class PersonDetailsService implements UserDetailsService {
 
     private final PeopleRepository peopleRepository;
 
-
     @Autowired
     public PersonDetailsService(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException{
-      Optional<Person> person = peopleRepository.findByUsername(s);
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Optional<Person> person = peopleRepository.findByUsername(s);
 
-      if (person.isEmpty())
-          throw new UsernameNotFoundException("User not found!");
+        if (person.isEmpty())
+            throw new UsernameNotFoundException("User not found");
 
-      return new PersonDetails(person.get());
+        return new PersonDetails(person.get());
     }
 }
