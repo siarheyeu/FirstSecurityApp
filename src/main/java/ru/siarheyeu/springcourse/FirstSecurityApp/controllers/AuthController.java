@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.siarheyeu.springcourse.FirstSecurityApp.dto.PersonDTO;
 import ru.siarheyeu.springcourse.FirstSecurityApp.models.Person;
 import ru.siarheyeu.springcourse.FirstSecurityApp.security.JWTUtil;
 import ru.siarheyeu.springcourse.FirstSecurityApp.services.RegistrationService;
@@ -39,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
+    public String performRegistration(@ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult){
         personValidator.validate(person, bindingResult);
 
         if(bindingResult.hasErrors())
