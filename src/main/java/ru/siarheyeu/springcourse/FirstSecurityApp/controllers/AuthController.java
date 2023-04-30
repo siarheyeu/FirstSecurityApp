@@ -12,6 +12,8 @@ import ru.siarheyeu.springcourse.FirstSecurityApp.security.JWTUtil;
 import ru.siarheyeu.springcourse.FirstSecurityApp.services.RegistrationService;
 import ru.siarheyeu.springcourse.FirstSecurityApp.util.PersonValidator;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -40,14 +42,22 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult){
+    public Map<String, String> performRegistration(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult){
+
+        Person person = convertToPerson(personDTO);
+
         personValidator.validate(person, bindingResult);
 
-        if(bindingResult.hasErrors())
-            return "/auth/registration";
+        if(bindingResult.hasErrors() {
+            return Map.of("message", "Ошибка!");
+        }
 
         registrationService.register(person);
 
         return "redirect:/auth/login";
+    }
+
+    public Person convertToPerson(PersonDTO personDTO) {
+        return this.modelMapper.map(personDTO, Person.class);
     }
 }
