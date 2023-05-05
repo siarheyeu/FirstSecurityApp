@@ -31,15 +31,15 @@ public class AuthController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/login")
-    public String loginPage(){
-        return "auth/login";
-    }
-
-    @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person){
-        return "auth/registration";
-    }
+//    @GetMapping("/login")
+//    public String loginPage(){
+//        return "auth/login";
+//    }
+//
+//    @GetMapping("/registration")
+//    public String registrationPage(@ModelAttribute("person") Person person){
+//        return "auth/registration";
+//    }
 
     @PostMapping("/registration")
     public Map<String, String> performRegistration(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult){
@@ -58,6 +58,7 @@ public class AuthController {
         return Map.of("jwt-token", token);
     }
 
+    public Map<String, Object>
     public Person convertToPerson(PersonDTO personDTO) {
         return this.modelMapper.map(personDTO, Person.class);
     }

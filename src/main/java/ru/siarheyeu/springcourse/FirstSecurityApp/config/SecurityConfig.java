@@ -12,6 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.siarheyeu.springcourse.FirstSecurityApp.dto.JWTFilter;
 import ru.siarheyeu.springcourse.FirstSecurityApp.services.PersonDetailsService;
 
 
@@ -19,7 +21,9 @@ import ru.siarheyeu.springcourse.FirstSecurityApp.services.PersonDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    private final AuthProviderImpl authProvider;
+    private final PersonDetailsService personDetailsService;
+    private final JWTFilter jwtfilter;
+
 
 
     private final PersonDetailsService personDetailsService;
@@ -45,17 +49,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .logout().
                 logoutUrl("/logout").
-                logoutSuccessUrl("/auth/login");
+                logoutSuccessUrl("/auth/login")
+                        .and()
+                        .sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);;\
+
+        http.addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     //Настраивает аутентификацию
     @Override
 protected void configure(AuthenticationManagerBuilder auth) throws Exception{
     auth.userDetailsService(personDetailsService)
-            .passwordEncoder(getPasswordEncoder())
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .passwordEncoder(getPasswordEncoder());
+
 }
 
 @Bean
